@@ -6,7 +6,7 @@ export const AiContext = createContext({
     setInput: () => { },
     recentPrompt: '',
     prevPrompts: [],
-    showResult: false,
+    resultIsShowing: false,
     loading: false,
     resultData: '',
     onSent: () => { },
@@ -16,7 +16,7 @@ const AiContextProvider = ({ children }) => {
     const [input, setInput] = useState('')
     const [recentPrompt, setRecentPrompts] = useState('')
     const [prevPrompts, setPrevPrompts] = useState([])
-    const [showResult, setShowResult] = useState(false)
+    const [resultIsShowing, setResultIsShowing] = useState(false)
     const [loading, setLoading] = useState(false)
     const [resultData, setResultData] = useState('')
     const [chatHistory, setChatHistory] = useState([])
@@ -26,6 +26,7 @@ const AiContextProvider = ({ children }) => {
         const result = await runChat(updatedHistory)
         const aiReply = result.candidates[0].content.parts[0].text
 
+        setResultIsShowing(true)
         setChatHistory([
             ...updatedHistory,
             { role: 'model', parts: [{ text: aiReply }] }
@@ -41,7 +42,7 @@ const AiContextProvider = ({ children }) => {
         setInput,
         recentPrompt,
         prevPrompts,
-        showResult,
+        resultIsShowing,
         loading,
         resultData,
         onSent
