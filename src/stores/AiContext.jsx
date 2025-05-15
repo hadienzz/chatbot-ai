@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import runChat from "../config/gemini";
 
 export const AiContext = createContext({
@@ -22,13 +22,19 @@ const AiContextProvider = ({ children }) => {
     const [chatHistory, setChatHistory] = useState([])
 
     const onSent = async (prompt) => {
-        setChatHistory((prev) => [...prev, { role: 'user', parts: [{ text: prompt }] }])
         const updatedHistory = [...chatHistory, { role: 'user', parts: [{ text: prompt }] }]
         const result = await runChat(updatedHistory)
         const aiReply = result.candidates[0].content.parts[0].text
 
-
+        setChatHistory([
+            ...updatedHistory,
+            { role: 'model', parts: [{ text: aiReply }] }
+        ])
     }
+
+    useEffect(() => {
+        console.log(chatHistory)
+    }, [chatHistory])
 
     const contextValue = {
         input,
