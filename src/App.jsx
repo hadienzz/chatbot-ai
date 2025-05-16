@@ -4,12 +4,12 @@ import AiContextProvider from "./stores/AiContext"
 
 const App = () => {
   return (
-    <AiContextProvider>
-      <div className="flex ">
+    <div className="flex h-screen overflow-y-auto">
+      <AiContextProvider>
         <Sidebar />
         <MainContent />
-      </div>
-    </AiContextProvider>
+      </AiContextProvider>
+    </div>
   )
 }
 

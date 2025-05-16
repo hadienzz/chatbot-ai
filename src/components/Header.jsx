@@ -3,13 +3,13 @@ import Card from "./Card"
 const Header = () => {
     return (
         <>
-            <div className="">
+            <div className="mt-4">
                 <h1 className="text-stone-400 text-lg">Hadin Chatbot</h1>
             </div>
 
-            <main className=" w-[900px]">
+            <main className=" mt-16 ">
 
-                <div className="pt-15 text-5xl">
+                <div className=" text-5xl">
                     <h1 className=" font-medium bg-gradient-to-r from-[#4b90ff] to-[#ff5546] inline-block h-[60px] bg-clip-text text-transparent">Hello, People!</h1>
                     <h1 className=" text-[#c4c7c5] font-medium">How Can i assist you today?</h1>
                 </div>
@@ -20,7 +20,7 @@ const Header = () => {
                     <Card />
                     <Card />
                 </div>
-            </main >
+            </main>
 
         </>
     )

@@ -10,6 +10,7 @@ export const AiContext = createContext({
     loading: false,
     resultData: '',
     onSent: () => { },
+    chatHistory: []
 })
 
 const AiContextProvider = ({ children }) => {
@@ -22,15 +23,20 @@ const AiContextProvider = ({ children }) => {
     const [chatHistory, setChatHistory] = useState([])
 
     const onSent = async (prompt) => {
+        setLoading(true)
+
         const updatedHistory = [...chatHistory, { role: 'user', parts: [{ text: prompt }] }]
         const result = await runChat(updatedHistory)
         const aiReply = result.candidates[0].content.parts[0].text
 
-        setResultIsShowing(true)
         setChatHistory([
             ...updatedHistory,
             { role: 'model', parts: [{ text: aiReply }] }
         ])
+
+        setLoading(false)
+        setResultIsShowing(true)
+        setInput('')
     }
 
     useEffect(() => {
@@ -45,7 +51,8 @@ const AiContextProvider = ({ children }) => {
         resultIsShowing,
         loading,
         resultData,
-        onSent
+        onSent,
+        chatHistory
     }
 
 
