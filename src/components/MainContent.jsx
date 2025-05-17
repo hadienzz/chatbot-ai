@@ -7,7 +7,6 @@ import MessageSection from "./MessageSection"
 const MainContent = () => {
     const { input, setInput, onSent, resultIsShowing, loading } = useContext(AiContext)
 
-
     return (
         <section className="pl-15 pt-2 flex flex-col justify-between ">
 

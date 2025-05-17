@@ -4,55 +4,90 @@ import runChat from "../config/gemini";
 export const AiContext = createContext({
     input: '',
     setInput: () => { },
-    recentPrompt: '',
-    prevPrompts: [],
     resultIsShowing: false,
     loading: false,
-    resultData: '',
     onSent: () => { },
-    chatHistory: []
+    chatHistory: [],
+    startNewChat: () => { },
+    allChat: [],
+    onSelectChat: () => { }
 })
 
 const AiContextProvider = ({ children }) => {
     const [input, setInput] = useState('')
-    const [recentPrompt, setRecentPrompts] = useState('')
-    const [prevPrompts, setPrevPrompts] = useState([])
     const [resultIsShowing, setResultIsShowing] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [resultData, setResultData] = useState('')
-    const [chatHistory, setChatHistory] = useState([])
+    const [allChat, setAllChat] = useState([])
+    const [chatHistory, setChatHistory] = useState({
+        chatId: crypto.randomUUID(),
+        messages: []
+    })
+
+    function startNewChat() {
+        if (chatHistory.messages.length > 0) {
+            setAllChat((prevState) => [
+                ...prevState,
+                {
+                    chatId: chatHistory.chatId,
+                    messages: [...chatHistory.messages.map(m => ({ ...m }))]
+                }
+            ]);
+        }
+
+        setChatHistory({
+            chatId: crypto.randomUUID(),
+            messages: []
+        });
+
+        setInput('');
+        setResultIsShowing(false);
+    }
+
+    const onSelectChat = (id) => {
+        const chat = allChat.find((item) => item.chatId === id)
+
+        if (!chat) return
+
+        setChatHistory((prevState) => ({
+            chatId: chat.chatId,
+            messages: [...chat.messages]
+        }))
+        setResultIsShowing(true)
+    }
 
     const onSent = async (prompt) => {
         setLoading(true)
 
-        const updatedHistory = [...chatHistory, { role: 'user', parts: [{ text: prompt }] }]
+        const updatedHistory = [...chatHistory.messages, { role: 'user', parts: [{ text: prompt }] }]
         const result = await runChat(updatedHistory)
         const aiReply = result.candidates[0].content.parts[0].text
 
-        setChatHistory([
-            ...updatedHistory,
-            { role: 'model', parts: [{ text: aiReply }] }
-        ])
+        setChatHistory((prevState) => ({
+            ...prevState,
+            messages: [...prevState.messages, { role: 'user', parts: [{ text: prompt }] }, { role: 'model', parts: [{ text: aiReply }] }]
+        }))
 
         setLoading(false)
         setResultIsShowing(true)
         setInput('')
     }
 
+    console.log(chatHistory)
+
     useEffect(() => {
-        console.log(chatHistory)
-    }, [chatHistory])
+        console.log(allChat)
+    }, [allChat])
 
     const contextValue = {
         input,
         setInput,
-        recentPrompt,
-        prevPrompts,
         resultIsShowing,
         loading,
-        resultData,
         onSent,
-        chatHistory
+        chatHistory,
+        startNewChat,
+        allChat,
+        onSelectChat
     }
 
 
