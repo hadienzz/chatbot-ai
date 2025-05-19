@@ -10,18 +10,23 @@ export const AiContext = createContext({
     chatHistory: [],
     startNewChat: () => { },
     allChat: [],
-    onSelectChat: () => { }
+    onSelectChat: () => { },
+    onToggle: () => { },
 })
 
 const AiContextProvider = ({ children }) => {
-    const [input, setInput] = useState('')
     const [resultIsShowing, setResultIsShowing] = useState(false)
     const [loading, setLoading] = useState(false)
     const [allChat, setAllChat] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
     const [chatHistory, setChatHistory] = useState({
         chatId: crypto.randomUUID(),
         messages: []
     })
+
+    const onToggle = () => {
+        setIsOpen((prevState => !prevState))
+    }
 
     function startNewChat() {
         if (chatHistory.messages.length > 0) {
@@ -42,7 +47,6 @@ const AiContextProvider = ({ children }) => {
             messages: []
         })
 
-        setInput('');
         setResultIsShowing(false);
     }
 
@@ -59,6 +63,11 @@ const AiContextProvider = ({ children }) => {
     }
 
     const onSent = async (prompt) => {
+        if (prompt.trim() === '') {
+            return
+        }
+
+        setLoading(true)
         const userPrompt = { role: 'user', parts: [{ text: prompt }] }
 
         const updatedMessages = [
@@ -95,19 +104,18 @@ const AiContextProvider = ({ children }) => {
 
         setLoading(false)
         setResultIsShowing(true)
-        setInput('')
     }
 
     const contextValue = {
-        input,
-        setInput,
         resultIsShowing,
         loading,
         onSent,
         chatHistory,
         startNewChat,
         allChat,
-        onSelectChat
+        onSelectChat,
+        onToggle,
+        isOpen
     }
 
 

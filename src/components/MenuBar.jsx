@@ -2,15 +2,23 @@ import { useContext } from "react";
 import { AiContext } from "../stores/AiContext";
 import ButtonStart from "./ButtonStart";
 
-const Sidebar = () => {
-    const { startNewChat, allChat, onSelectChat } = useContext(AiContext);
+
+const MenuBar = () => {
+    const { allChat, onToggle, onSelectChat } = useContext(AiContext)
 
     return (
-        <>
-            <aside className=" lg:min-w-1/6 md:w-1/7 bg-[#f0f4f9] px-4 pt-6 sticky top-0 h-screen hidden md:block">
-                <ButtonStart />
-                <h1 className="py-4 font-semibold">Recent Chat</h1>
-                <ul className="w-full space-y-2 overflow-y-auto max-h-[85vh]">
+        <div className="w-full h-screen absolute md:hidden z-100 bg-[rgba(0,0,0,0.5)]" onClick={onToggle}>
+
+            <div className="h-screen bg-[#f0f4f9] w-2/5 md:hidden px-4 pt-6 z-101" onClick={(e) => e.stopPropagation()}>
+
+                <div className="flex justify-between items-center ">
+                    <ButtonStart />
+                    <p className="p-1 px-3 bg-white rounded-full cursor-pointer 
+                    hover:bg-stone-400" onClick={onToggle}>X</p>
+                </div>
+
+                <h1 className="font-lg font-medium my-4">Recent Chats</h1>
+                <ul>
                     {allChat.map((chat) => {
                         const lastUserMessage = chat.messages.find((m) => m.role === "user");
                         return (
@@ -25,10 +33,11 @@ const Sidebar = () => {
                             </li>
                         );
                     })}
-                </ul>
-            </aside>
-        </>
-    );
-};
 
-export default Sidebar;
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+export default MenuBar

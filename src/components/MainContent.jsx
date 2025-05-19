@@ -1,33 +1,44 @@
-import { useContext } from "react"
+import { useContext, useRef } from "react"
 import Card from "./Card"
 import { AiContext } from "../stores/AiContext"
 import Header from "./Header"
 import MessageSection from "./MessageSection"
 
 const MainContent = () => {
-    const { input, setInput, onSent, resultIsShowing, loading } = useContext(AiContext)
+    const { onSent, resultIsShowing, loading } = useContext(AiContext)
+    const promptRef = useRef()
+
+    const handleSubmit = () => {
+        onSent(promptRef.current.value)
+        promptRef.current.value = ''
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit
+        }
+    })
 
     return (
-        <section className="md:pl-15 flex flex-col justify-between lg:w-[900px] md:w-[700px] ">
+        <section className="lg:pl-16 md:pl-8  flex flex-col justify-between lg:w-[900px] w-full md:w-[700px] ">
 
-            <div className=" px-2 ">
+            <div className="">
                 {resultIsShowing || loading ? <MessageSection /> : <Header />}
             </div>
 
-            <div className="sticky bottom-0 left-0 w-full  ">
-                <div className=" mx-auto flex gap-4 bg-[#cbcbce] px-6 py-4 rounded-2xl">
+            <div className="sticky bottom-0 left-0 w-full bg-white px-2">
+                <div className="mx-auto flex gap-4 bg-[#cbcbce] px-6 py-4 rounded-2xl ">
                     <input
                         type="text"
                         placeholder="Enter a prompt here"
                         className="flex-1 rounded-full outline-none p-4 bg-[#f0f4f9]"
-                        onChange={(e) => setInput(e.target.value)}
-                        value={input}
+                        ref={promptRef}
                     />
                     <button
-                        className="bg-white text-stone-700 px-3 rounded-3xl cursor-pointer"
-                        onClick={() => onSent(input)}
+                        className={`bg-white text-stone-700 px-3 cursor-pointer text-4xl font-bold rounded-full hover:bg-stone-200`}
+                        onClick={handleSubmit}
                     >
-                        Enter
+                        ↑
                     </button>
                 </div>
                 <p className="text-center text-xs py-2 text-black bg-white">
