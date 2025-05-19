@@ -5,7 +5,7 @@ const Sidebar = () => {
     const { startNewChat, allChat, onSelectChat } = useContext(AiContext);
 
     return (
-        <aside className="w-1/6 bg-[#f0f4f9] px-4 pt-6 sticky top-0 h-screen">
+        <aside className="max-w-1/6 bg-[#f0f4f9] px-4 pt-6 sticky top-0 h-screen hidden lg:block">
             <button
                 className="bg-gray-300 text-gray-800 px-3 py-2 rounded-3xl outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
                 onClick={startNewChat}
@@ -19,7 +19,7 @@ const Sidebar = () => {
                     return (
                         <li
                             key={chat.chatId}
-                            className="cursor-pointer p-2 bg-white rounded-md shadow-sm hover:bg-gray-200 transition"
+                            className="cursor-pointer p-2 bg-white rounded-md shadow-sm hover:bg-gray-200 transition truncate"
                             onClick={() => onSelectChat(chat.chatId)}
                         >
                             {lastUserMessage

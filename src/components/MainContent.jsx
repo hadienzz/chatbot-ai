@@ -8,14 +8,14 @@ const MainContent = () => {
     const { input, setInput, onSent, resultIsShowing, loading } = useContext(AiContext)
 
     return (
-        <section className="pl-15 pt-2 flex flex-col justify-between ">
+        <section className="md:pl-15 flex flex-col justify-between lg:w-[900px] md:w-[700px] ">
 
-            <div className="w-[900px] ">
+            <div className=" px-2 ">
                 {resultIsShowing || loading ? <MessageSection /> : <Header />}
             </div>
 
-            <div className="sticky  bottom-0 left-0 w-full  ">
-                <div className="max-w-[900px] mx-auto flex gap-4 bg-[#cbcbce] px-6 py-4 rounded-2xl">
+            <div className="sticky bottom-0 left-0 w-full  ">
+                <div className=" mx-auto flex gap-4 bg-[#cbcbce] px-6 py-4 rounded-2xl">
                     <input
                         type="text"
                         placeholder="Enter a prompt here"

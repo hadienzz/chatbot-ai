@@ -1,8 +1,12 @@
-const Card = () => {
+import { useContext } from "react"
+import { AiContext } from "../stores/AiContext"
+
+const Card = ({ text }) => {
+    const { onSent } = useContext(AiContext)
+
     return (
-        <div className="bg-[#f0f4f9] text-[#5a5a5a] p-4">
-            <h1 className="rounded-lg">Suggest beautiful places to see on an upcoming road trip</h1>
-            <p className="text-end mt-12">ICON</p>
+        <div className="bg-[#f0f4f9] text-[#5a5a5a] p-4 cursor-pointer" onClick={() => onSent(text.text)}>
+            <h1 className="rounded-lg">{text.text}</h1>
         </div>
     )
 }

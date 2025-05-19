@@ -25,19 +25,22 @@ const AiContextProvider = ({ children }) => {
 
     function startNewChat() {
         if (chatHistory.messages.length > 0) {
-            setAllChat((prevState) => [
-                ...prevState,
-                {
-                    chatId: chatHistory.chatId,
-                    messages: [...chatHistory.messages.map(m => ({ ...m }))]
+            setAllChat((prevState) => {
+                const existingIndex = prevState.findIndex((chat) => chat.chatId === chatHistory.chatId)
+
+                if (existingIndex !== -1) {
+                    const updated = [...prevState]
+                    updated[existingIndex] = chatHistory
+                    return updated
                 }
-            ]);
+                return [...prevState, chatHistory]
+            })
         }
 
         setChatHistory({
             chatId: crypto.randomUUID(),
             messages: []
-        });
+        })
 
         setInput('');
         setResultIsShowing(false);
@@ -56,27 +59,44 @@ const AiContextProvider = ({ children }) => {
     }
 
     const onSent = async (prompt) => {
-        setLoading(true)
+        const userPrompt = { role: 'user', parts: [{ text: prompt }] }
 
-        const updatedHistory = [...chatHistory.messages, { role: 'user', parts: [{ text: prompt }] }]
-        const result = await runChat(updatedHistory)
-        const aiReply = result.candidates[0].content.parts[0].text
+        const updatedMessages = [
+            ...chatHistory.messages,
+            userPrompt
+        ]
+
+        const result = await runChat(updatedMessages)
+        const aiReply = { role: 'model', parts: [{ text: result.candidates[0].content.parts[0].text }] }
+
+        const newMessage = [...updatedMessages, aiReply]
 
         setChatHistory((prevState) => ({
             ...prevState,
-            messages: [...prevState.messages, { role: 'user', parts: [{ text: prompt }] }, { role: 'model', parts: [{ text: aiReply }] }]
+            messages: newMessage
         }))
+
+        setAllChat((prevState) => {
+            const existingIndex = prevState.findIndex((chat => chat.chatId === chatHistory.chatId))
+
+            const updatedChat = {
+                chatId: chatHistory.chatId,
+                messages: newMessage
+            }
+
+            if (existingIndex !== -1) {
+                const updated = [...prevState]
+                updated[existingIndex] = updatedChat
+                return updated
+            }
+
+            return [...prevState, updatedChat]
+        })
 
         setLoading(false)
         setResultIsShowing(true)
         setInput('')
     }
-
-    console.log(chatHistory)
-
-    useEffect(() => {
-        console.log(allChat)
-    }, [allChat])
 
     const contextValue = {
         input,

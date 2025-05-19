@@ -6,7 +6,7 @@ const MessageSection = () => {
     const { loading, chatHistory, resultIsShowing } = useContext(AiContext)
 
     return (
-        <div className="overflow-y-auto flex-1 w-full mb-16 prose max-w-none " >
+        <div className="overflow-y-auto  mb-16 md:w-full " >
             {!resultIsShowing && loading ? <p>Loading</p> :
                 chatHistory.messages.map((item, idx) => (
                     <div className={`flex items-center ${item.role === 'user' ? 'justify-end' : 'justify-start'}`} key={idx}>
