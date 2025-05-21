@@ -1,7 +1,7 @@
 import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 
 const ai = new GoogleGenAI({
-  apiKey: `AIzaSyApzRXjycLBuAaPJuIuGSxdo6A-fuI1vxQ`,
+  apiKey: `${import.meta.env.VITE_API_KEY}`,
 });
 
 async function runChat(prompt) {

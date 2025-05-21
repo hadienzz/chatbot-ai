@@ -3,4 +3,15 @@
 @theme {
   --color-prim: #2125290a;
   --color-button: #444444;
+  --animate-loader: loader 3s infinite;
+
+  @keyframes loader {
+    0% {
+      background-position: -800px 0px;
+    }
+
+    100% {
+      background-position: 800px 0px;
+    }
+  }
 }

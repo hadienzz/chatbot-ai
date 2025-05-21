@@ -1,6 +1,12 @@
 import Card from "./Card"
+import { useContext } from "react"
+import MenuBar from "./MenuBar"
+import { AiContext } from "../stores/AiContext"
+import Hamburger from "./Hamburger"
 
 const Header = () => {
+    const { isOpen } = useContext(AiContext)
+
     const CARD_CONTENT = [
         { text: 'Ask AI: “Give me unique weekend getaway ideas”' },
         { text: 'Need motivation? Try: “Write me an inspiring quote for today”' },
@@ -32,15 +38,17 @@ const Header = () => {
     const genRandomInt = (max) => {
         return Math.floor(Math.random() * max)
     }
-    // grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
 
     return (
         <>
-            <div className="mt-4">
+            {isOpen ? <MenuBar /> : null}
+
+            <div className=" px-2">
+                <Hamburger />
                 <h1 className="text-stone-400 text-lg">Hadin Chatbot</h1>
             </div>
 
-            <main className=" mt-4 ">
+            <main className="px-2">
 
                 <div className=" text-5xl">
                     <h1 className=" font-medium bg-gradient-to-r from-[#4b90ff] to-[#ff5546] inline-block h-[60px] bg-clip-text text-transparent">Hello, People!</h1>
