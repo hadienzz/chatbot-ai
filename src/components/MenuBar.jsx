@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { AiContext } from "../stores/AiContext";
 import ButtonStart from "./ButtonStart";
-
+import { Trash2 } from "lucide-react";
 
 const MenuBar = () => {
-    const { allChat, onToggle, onSelectChat } = useContext(AiContext)
+    const { allChat, onToggle, onSelectChat, onDelete } = useContext(AiContext)
 
     return (
         <div className="w-full h-screen absolute md:hidden z-100 bg-[rgba(0,0,0,0.5)]" onClick={onToggle}>
@@ -22,15 +22,10 @@ const MenuBar = () => {
                     {allChat.map((chat) => {
                         const lastUserMessage = chat.messages.find((m) => m.role === "user");
                         return (
-                            <li
-                                key={chat.chatId}
-                                className="cursor-pointer p-2 bg-white rounded-md shadow-sm hover:bg-gray-200 transition truncate"
-                                onClick={() => onSelectChat(chat.chatId)}
-                            >
-                                {lastUserMessage
-                                    ? lastUserMessage.parts[0].text.slice(0, 30) + "..."
-                                    : "Percakapan Baru"}
-                            </li>
+                            <div className=" bg-white flex items-center justify-between p-2 hover:bg-gray-200 transition cursor-pointer rounded-md shadow-sm" key={chat.chatId} >
+                                <p className="truncate w-full" onClick={() => onSelectChat(chat.chatId)}>{lastUserMessage.parts[0].text.slice(0, 30)}</p>
+                                <Trash2 className="min-w-[24px]" onClick={() => onDelete(chat.chatId)} />
+                            </div>
                         );
                     })}
 

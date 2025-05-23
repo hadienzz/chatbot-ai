@@ -110,12 +110,14 @@ const AiContextProvider = ({ children }) => {
     const onDelete = (id) => {
         setAllChat((prevState) => prevState.filter((item) => item.chatId !== id));
 
-        setChatHistory({
-            chatId: crypto.randomUUID(),
-            messages: []
-        })
+        if (id === chatHistory.chatId) {
+            setResultIsShowing(false)
+            setChatHistory({
+                chatId: crypto.randomUUID(),
+                messages: []
+            })
+        }
 
-        setResultIsShowing(false)
     }
 
     const contextValue = {

@@ -15,8 +15,8 @@ const Sidebar = () => {
                     {allChat.map((chat) => {
                         const lastUserMessage = chat.messages.find((m) => m.role === "user");
                         return (
-                            <div className="w-full bg-white flex items-center justify-between p-2 hover:bg-gray-200 transition cursor-pointer rounded-md shadow-sm" key={chat.chatId} onClick={() => onSelectChat(chat.chatId)}>
-                                <p className="truncate">{lastUserMessage.parts[0].text.slice(0, 30)}</p>
+                            <div className=" bg-white flex items-center justify-between p-2 hover:bg-gray-200 transition cursor-pointer rounded-md shadow-sm" key={chat.chatId} >
+                                <p className="truncate w-full" onClick={() => onSelectChat(chat.chatId)}>{lastUserMessage.parts[0].text.slice(0, 30)}</p>
                                 <Trash2 className="min-w-[24px]" onClick={() => onDelete(chat.chatId)} />
                             </div>
                         );

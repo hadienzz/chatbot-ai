@@ -6,7 +6,7 @@ const Hamburger = () => {
     const { onToggle } = useContext(AiContext)
 
     return (
-        <div className="mb-3 md:hidden mt-4">
+        <div className="mb-3 md:hidden ">
             <Menu className="cursor-pointer" onClick={onToggle} />
         </div>
     )
