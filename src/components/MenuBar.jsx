@@ -6,6 +6,8 @@ import { Trash2 } from "lucide-react";
 const MenuBar = () => {
     const { allChat, onToggle, onSelectChat, onDelete } = useContext(AiContext)
 
+    
+
     return (
         <div className="w-full h-screen absolute md:hidden z-100 bg-[rgba(0,0,0,0.5)]" onClick={onToggle}>
 

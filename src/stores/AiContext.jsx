@@ -18,12 +18,27 @@ export const AiContext = createContext({
 const AiContextProvider = ({ children }) => {
     const [resultIsShowing, setResultIsShowing] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [allChat, setAllChat] = useState([])
     const [isOpen, setIsOpen] = useState(false)
     const [chatHistory, setChatHistory] = useState({
         chatId: crypto.randomUUID(),
         messages: []
     })
+    const [allChat, setAllChat] = useState(() => {
+        const storedChats = localStorage.getItem('allChat')
+        return storedChats ? JSON.parse(storedChats) : []
+    });
+
+    useEffect(() => {
+        const storedChats = localStorage.getItem('allChat')
+        if (storedChats) {
+            setAllChat(JSON.parse(storedChats))
+        }
+    }, [])
+
+    useEffect(() => {
+        window.localStorage.setItem('allChat', JSON.stringify(allChat))
+    }, [allChat])
+
 
     const onToggle = () => {
         setIsOpen((prevState => !prevState))
@@ -117,8 +132,9 @@ const AiContextProvider = ({ children }) => {
                 messages: []
             })
         }
-
     }
+
+
 
     const contextValue = {
         resultIsShowing,

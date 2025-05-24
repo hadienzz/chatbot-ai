@@ -27,7 +27,6 @@ const MainContent = () => {
         content = <Header />
     }
 
-    console.log(resultIsShowing)
 
     return (
         <section className="lg:pl-16 md:pl-8  flex flex-col justify-between lg:w-[900px] w-full md:w-[700px] mt-4">
